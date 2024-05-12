@@ -1,0 +1,60 @@
+.analytics {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 30px;
+
+    .boxes {
+        display: flex;
+        gap: 40px;
+
+        a {
+            background-color: var(--black3);
+            border-radius: 20px;
+            box-sizing: border-box;
+            width: 290px;
+            height: 150px;
+            box-sizing: border-box;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: .3s;
+
+            &:hover {
+                background-color: var(--black1);
+            }
+
+            h2 {
+                font-size: 30px;
+            }
+
+            span {
+                font-size: 36px;
+            }
+
+            &:first-child span {
+                color: var(--orange);
+            }
+
+            &:nth-child(2) span {
+                color: var(--blue2);
+            }
+
+            &:nth-child(3) span {
+                color: var(--blue1);
+            }
+        }
+    }
+
+    .chart {
+        display: flex;
+        justify-content: center;
+
+        .container {
+            width: 80%;
+            overflow: hidden;
+        }
+    }
+}

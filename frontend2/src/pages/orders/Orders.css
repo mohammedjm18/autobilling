@@ -1,0 +1,102 @@
+.orders {
+    flex: 1;
+
+    .css-1wy8uaa-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
+        background-color: #151419 !important;
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .total {
+            font-size: 26px;
+
+            span {
+                color: var(--blue1);
+            }
+        }
+
+        .dates {
+            display: flex;
+            gap: 20px;
+
+            .date {
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                >div {
+                    direction: ltr !important;
+                    background-color: var(--black3);
+                    border-radius: 0.5rem !important;
+                    font-size: 16px;
+
+                    input {
+                        font-size: 16px !important;
+                    }
+
+                    >div {
+                        height: 100%;
+
+                        fieldset {
+                            border: 0.1rem solid #dadada;
+                            transition: .3s;
+                            border-radius: 0.5rem;
+                        }
+                    }
+
+                    .Mui-focused .MuiOutlinedInput-notchedOutline {
+                        border-color: #fff !important;
+                    }
+
+                    &:hover {
+                        .MuiOutlinedInput-notchedOutline {
+                            border-color: #fff !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .table {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+        .container {
+            width: 600px;
+
+            .css-11xur9t-MuiPaper-root-MuiTableContainer-root {
+                background-color: var(--black3);
+            }
+
+            .css-1ndpvdd-MuiTableCell-root {
+                color: #fff;
+            }
+
+            .css-1yhpg23-MuiTableCell-root {
+                color: #fff;
+            }
+
+            .css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root {
+                color: #fff;
+            }
+
+            .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar {
+                color: #fff;
+            }
+
+            .css-18k87ye-MuiTypography-root{
+                color: #fff;
+            }
+
+            .css-zylse7-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+                color: var(--grey);
+            }
+        }
+    }
+}

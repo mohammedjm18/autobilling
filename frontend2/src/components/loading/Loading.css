@@ -1,0 +1,14 @@
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg{
+        color: var(--blue1);
+    }
+
+    span{
+        height: 70px !important;
+        width: 70px !important;
+    }
+}
