@@ -261,6 +261,7 @@ app.post('/order', async (req, res) => {
         }
         await connection.query('INSERT INTO order_items (order_id, product_id, amount, price) VALUES ?', [orderItemsData]);
         await connection.commit();
+        cart = [];
         res.status(200).json({ msg: 'Order created successfully' });
     } catch (error) {
         console.log(error);

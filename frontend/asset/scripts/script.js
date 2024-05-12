@@ -54,7 +54,7 @@ const loadProducts = async () => {
     })
     if (JSON.stringify(products) !== JSON.stringify(responseText) || amountChanged) {
         products = responseText;
-        const total = (products.reduce((a,b)=>a+(+b.price_kg)*(+b.amount),0)*1000).toLocaleString();
+        const total = (products.reduce((a, b) => a + (+b.price_kg) * (+b.amount), 0) * 1000).toLocaleString();
         document.getElementById('total').querySelector('span').innerText = total;
         amountChanged = false;
         if (products.length === 0) {
@@ -90,15 +90,27 @@ window.onload = () => {
 }
 
 var checkout = async () => {
-    try{
-        const orderItems = products.map(product=>({product_id:product.id,amount:+product.amount}));
-        console.log(orderItems);
-    }catch(err){
-
+    try {
+        const orderItems = products.map(product => ({ product_id: product.id, amount: +product.amount }));
+        const res = await axios.post('http://localhost:3000/order', { orderItems });
+        if (res.status === 200) {
+            document.getElementById('dialog').style = "display: flex;color:cornflowerblue";
+            document.getElementById('dialog').querySelector('.container').innerText = 'Order has been created successfully!';
+            setTimeout(async () => {
+                window.location.reload();
+            }, 3000)
+            return;
+        }
+        document.getElementById('dialog').style = "display: flex;color:firebrick";
+        document.getElementById('dialog').querySelector('.container').innerText = "Error, can't make order!";
+        setTimeout(async () => {
+            window.location.reload();
+        }, 3000)
+    } catch {
+        document.getElementById('dialog').style = "display: flex;color:firebrick";
+        document.getElementById('dialog').querySelector('.container').innerText = "Error, can't make order!";
+        setTimeout(async () => {
+            window.location.reload();
+        }, 3000)
     }
-    // document.getElementById('successAdd').style = "display: flex;"
-    // setTimeout(async () => {
-    //     await axios.delete('http://localhost:3000/');
-    //     window.location.reload();
-    // }, 3000)
 }
