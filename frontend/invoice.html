@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <script src="./asset/axios.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --black1: #0c0b10;
+            --black2: #1f1e25;
+            --black3: #151419;
+            --grey: #7b7b80;
+            --blue1: #4c71f0;
+            --blue2: #27c2ff;
+            --orange: #f79319;
+            --green1: #21d08f;
+            --green2: #138754;
+            --red1: #ef3352;
+            --red2: #8e0029;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            color: #fff;
+            background-color: var(--black1);
+        }
+
+        .container {
+            background-color: var(--black2);
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+
+            h1 {
+                color: var(--blue1);
+                margin-bottom: 15px;
+            }
+
+
+            .items {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                .item {
+                    display: flex;
+                    justify-content: space-between;
+
+                    h3 {
+                        text-transform: capitalize;
+                    }
+
+                    h4 {
+                        &:last-child {
+                            color: var(--grey);
+                        }
+                    }
+                }
+
+            }
+
+            .line {
+                display: block;
+                height: 2px;
+                width: 100%;
+                background-color: #bbb;
+            }
+
+            .total {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 15px;
+                color: var(--orange);
+            }
+
+            .pay {
+                display: flex;
+                justify-content: center;
+                cursor: pointer;
+
+                button {
+                    border: none;
+                    outline: none;
+                    padding: 10px 20px;
+                    color: #fff;
+                    background-color: var(--green2);
+                    font-size: 20px;
+                    border-radius: 10px;
+                    margin-top: 40px;
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Invoice</h1>
+        <div class="items">
+
+        </div>
+        <div class="total">
+            <h2>Total</h2>
+            <h2 id="totalprice"></h2>
+        </div>
+        <div class="pay">
+            <button type="button" onclick="payNow()">Pay Now</button>
+        </div>
+    </div>
+
+    <script>
+        url = "http://172.20.10.5";
+        async function loadItems() {
+            const itemsDiv = document.querySelector('.items');
+            try {
+                itemsDiv.innerHTML = '';
+                const res = await axios.get(`${url}:3000/cart`);
+                res.data.forEach(el => {
+                    itemsDiv.innerHTML += `
+                        <div class="item">
+                            <h3>${el.name}</h3>
+                            <div class="price">
+                                <h4>${(el.price * 1000).toLocaleString()} IQD</h4>
+                                <h4>x${el.amount} Kg</h4>
+                            </div>
+                        </div>
+                        <span class="line"></span>
+                    `
+                });
+                document.getElementById('totalprice').innerText = (res.data.reduce((a,b)=>a+b.price*b.amount,0)*1000).toLocaleString()+" IQD";
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        loadItems();
+
+
+        async function payNow() {
+            try {
+                const res = await axios.post(`${url}:3000/order`);
+                if (res.status === 200) window.location.assign(`${url}:5500/frontend/success.html`);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    </script>
+</body>
+
+</html>

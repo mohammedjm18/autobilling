@@ -4,7 +4,7 @@ import requests
 
 # Function to send POST request with detected fruit data
 def send_post_request(fruit_id, fruit_name):
-    url = "http://localhost:3000/product"
+    url = "http://localhost:3000/cart"
     data = {
         "id": fruit_id,
         "name": fruit_name
@@ -20,7 +20,7 @@ def send_post_request(fruit_id, fruit_name):
 
 # Function to check if a product exists in the API
 def product_exists_in_api(product_name):
-    url = "http://localhost:3000/product"
+    url = "http://localhost:3000/cart"
     try:
         response = requests.get(url)
         if response.status_code == 200:

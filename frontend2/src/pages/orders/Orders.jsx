@@ -54,7 +54,7 @@ function Row(props) {
                                     <TableRow>
                                         <TableCell align="center" style={{ color: '#fff' }}>Name</TableCell>
                                         <TableCell align="center" style={{ color: '#fff' }}>Amount (Kg)</TableCell>
-                                        <TableCell align="center" style={{ color: '#fff' }}>Price (IQD)</TableCell>
+                                        <TableCell align="center" style={{ color: '#fff' }}>Price/Kg (IQD)</TableCell>
                                         <TableCell align="center" style={{ color: '#fff' }}>Total price (IQD)</TableCell>
                                     </TableRow>
                                 </TableHead>

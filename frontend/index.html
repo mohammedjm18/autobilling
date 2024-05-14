@@ -18,8 +18,7 @@
 <body>
     <!--Animation-->
     <div class="lottie" id="1">
-        <lottie-player src="./asset/lottie.json" background="transparent"
-            speed="1" loop autoplay></lottie-player>
+        <lottie-player src="./asset/lottie.json" background="transparent" speed="1" loop autoplay></lottie-player>
         <div class="text">PLACE ITEMS TO START CHECKOUT</div>
     </div>
 
@@ -34,13 +33,22 @@
 
     <!--Checkout Button-->
     <div id="final">
-        <button style="margin-bottom: 50px;" id="2" class="checkout" onclick="checkout()">CHECKOUT</button>
+        <button class="checkout" onclick="checkout()">Pay Cash</button>
+
+        <!--Start Card Payment-->
+        <div class="qr" style="margin-bottom: 30px;">
+            <h2>Pay By Card</h2>
+            <div id="qrcode">
+                <img src="http://localhost:3000/images/qrcode.png" alt="">
+            </div>
+        </div>
+        <!--End Card Payment-->
     </div>
 
     <!--Success-->
     <div id="dialog" style="display: none;">
         <div class="container">
-            
+
         </div>
     </div>
 </body>

@@ -1,5 +1,4 @@
 let products = [];
-let amountChanged = false;
 
 const productsDOM = () => {
     document.getElementById('cart').innerHTML = '';
@@ -13,10 +12,10 @@ const productsDOM = () => {
 
             <div class="info">
                 <div class="heads">
-                    <h3>name</h3>
-                    <h3>amount (Kg)</h3>
-                    <h3>price (IQD)</h3>
-                    <h3>total (IQD)</h3>
+                    <h3>Name</h3>
+                    <h3>Amount (Kg)</h3>
+                    <h3>Price/Kg (IQD)</h3>
+                    <h3>Total (IQD)</h3>
                 </div>
                 <div class="ibody">
                     <div class="name">
@@ -24,7 +23,7 @@ const productsDOM = () => {
                     </div>
 
                     <div class="amount">
-                        <input class="back" value="${product.amount}" onchange="changeAmount(${product.id},this.value)"/>
+                        <input class="back" type="number" value="${product.amount}" onchange="changeAmount(${product.id},this.value)"/>
                     </div>
 
                     <div class="price">
@@ -47,24 +46,20 @@ const loadProducts = async () => {
 
     let res = await axios.get(url);
     responseText = await res.data;
-    responseText.map(respr => {
-        const product = products.find(product => product.id === respr.id);
-        if (!product) respr.amount = '1';
-        else respr.amount = product.amount;
-    })
-    if (JSON.stringify(products) !== JSON.stringify(responseText) || amountChanged) {
+    if (JSON.stringify(products) !== JSON.stringify(responseText)) {
         products = responseText;
-        const total = (products.reduce((a, b) => a + (+b.price_kg) * (+b.amount), 0) * 1000).toLocaleString();
-        document.getElementById('total').querySelector('span').innerText = total;
+        console.log(products);
+        const total = (products.reduce((a, b) => a + (+b.price) * (+b.amount), 0) * 1000).toLocaleString();
+        document.getElementById('total').querySelector('span').innerText = total + " IQD";
         amountChanged = false;
         if (products.length === 0) {
             document.getElementById('1').style = "display: grid;";
-            document.getElementById('2').style = "display: none;";
+            document.getElementById('final').style = "display: none;";
             document.getElementById('cart').style = "display: none;";
             document.getElementById('total').style = "display:none;";
         } else {
             document.getElementById('1').style = "display: none;";
-            document.getElementById('2').style = "display: grid;";
+            document.getElementById('final').style = "display: flex;";
             document.getElementById('cart').style = "display: flex;";
             document.getElementById('total').style = 'display:block;'
             productsDOM();
@@ -73,10 +68,16 @@ const loadProducts = async () => {
 }
 
 
-const changeAmount = (productId, amount) => {
-    const product = products.find(product => product.id === productId);
-    product.amount = amount;
-    amountChanged = true;
+const changeAmount = async (productId, amount) => {
+    if (+amount <= 0) {
+        productsDOM();
+        return;
+    };
+    try {
+        const res = await axios.put('http://localhost:3000/cart', { id: productId, amount });
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 const deleteProduct = async (productId) => {
@@ -91,8 +92,7 @@ window.onload = () => {
 
 var checkout = async () => {
     try {
-        const orderItems = products.map(product => ({ product_id: product.id, amount: +product.amount }));
-        const res = await axios.post('http://localhost:3000/order', { orderItems });
+        const res = await axios.post('http://localhost:3000/order', {});
         if (res.status === 200) {
             document.getElementById('dialog').style = "display: flex;color:cornflowerblue";
             document.getElementById('dialog').querySelector('.container').innerText = 'Order has been created successfully!';

@@ -5,6 +5,27 @@ const { format } = require('date-fns');
 const path = require('path');
 const axios = require('axios');
 
+const fs = require('fs');
+const qr = require('qrcode');
+const os = require('os');
+
+function makeQRCodeOnMyIP() {
+    const networkInterfaces = os.networkInterfaces();
+    let ipv4Address;
+    Object.keys(networkInterfaces).forEach((interfaceName) => {
+        networkInterfaces[interfaceName].forEach((iface) => {
+            if (!iface.internal && iface.family === 'IPv4') {
+                ipv4Address = iface.address;
+            }
+        });
+    });
+    qr.toFile(path.join(__dirname, 'assets', 'images', 'qrcode.png'), `http://${ipv4Address}:5500/frontend/invoice.html`, (err) => {
+        if (err) throw err;
+    });
+}
+
+makeQRCodeOnMyIP();
+
 //script for testing, adding orders to database
 async function postOrder(orderItems, createdAt) {
     try {
@@ -85,7 +106,7 @@ const getWeeks = (startOfWeek = 'saturday', numberOfPreviousWeeks = 4) => {
 }
 
 const app = express();
-app.use('/images',express.static(path.join(__dirname,'assets','images')));
+app.use('/images', express.static(path.join(__dirname, 'assets', 'images')));
 
 const db = require('mysql2/promise').createPool({
     host: 'localhost',
@@ -115,11 +136,13 @@ app.post('/cart', async (req, res) => {
             connection = await db.getConnection();
             const [row] = await connection.query('SELECT * FROM products WHERE id = ?', [id]);
             if (row.length === 0) throw new Error('Product not exists in database!');
+            const { price_kg, ...others } = row[0];
             cart.push({
-                ...row[0],
-                price:+row[0].price_kg
+                ...others,
+                price: +row[0].price_kg,
+                amount: 1
             });
-            res.status(200).json({ msg:'Product added to products array.' });
+            res.status(200).json({ msg: 'Product added to products array.' });
         } catch (error) {
             if (error.sqlState) return res.status(400).json({ msg: 'error with MySQL database' });
             res.status(400).json({ msg: error.message });
@@ -128,6 +151,17 @@ app.post('/cart', async (req, res) => {
         }
     } else {
         res.status(400).json({ msg: 'Product Already Exists!' });
+    }
+});
+
+app.put('/cart', async (req, res) => {
+    const { id, amount } = req.body
+    if (cart.some(p => p.id === id)) {
+        const itemIndex = cart.findIndex(item => item.id === id);
+        cart[itemIndex].amount = +amount;
+        res.status(200).json({ msg: 'Product aamount changed.' });
+    } else {
+        res.status(404).json({ msg: 'Product not Exists!' });
     }
 });
 
@@ -229,7 +263,8 @@ app.patch('/products', async (req, res) => {
 
 //orders routes
 app.post('/order', async (req, res) => {
-    const { orderItems, createdAt } = req.body; // Extract datetime from req.body
+    const { createdAt } = req.body; // Extract datetime from req.body
+    const orderItems = cart.map(item => ({ product_id: item.id, amount: item.amount }))
     let connection;
     try {
         connection = await db.getConnection();
