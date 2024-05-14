@@ -19,7 +19,7 @@ function makeQRCodeOnMyIP() {
             }
         });
     });
-    qr.toFile(path.join(__dirname, 'assets', 'images', 'qrcode.png'), `http://${ipv4Address}:5500/frontend/invoice.html`, (err) => {
+    qr.toFile(path.join(__dirname, 'assets', 'images', 'qrcode.png'), `http://${ipv4Address}:3001/invoice.html`, (err) => {
         if (err) throw err;
     });
 }

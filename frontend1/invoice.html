@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
-    <script src="./asset/axios.js"></script>
+    <script src="/axios.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
 
@@ -124,6 +124,7 @@
             try {
                 itemsDiv.innerHTML = '';
                 const res = await axios.get(`${url}:3000/cart`);
+                if(res.data.length===0) window.location.assign(`${url}:3001/404.html`);
                 res.data.forEach(el => {
                     itemsDiv.innerHTML += `
                         <div class="item">
@@ -147,7 +148,7 @@
         async function payNow() {
             try {
                 const res = await axios.post(`${url}:3000/order`);
-                if (res.status === 200) window.location.assign(`${url}:5500/frontend/success.html`);
+                if (res.status === 200) window.location.assign(`${url}:3001/success.html`);
             } catch (err) {
                 console.log(err);
             }
