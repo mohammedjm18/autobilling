@@ -6,8 +6,7 @@ import requests
 def send_post_request(fruit_id, fruit_name):
     url = "http://localhost:3000/cart"
     data = {
-        "id": fruit_id,
-        "name": fruit_name
+        "id": fruit_id
     }
     try:
         response = requests.post(url, json=data)

@@ -40,15 +40,13 @@ async function createOrders() {
     try {
         // Define products and their IDs
         const products = [1, 2, 3];
-
-        // Generate 500 orders for September 2024
         for (let i = 1; i <= 30; i++) {
             // Generate random day and hour of the day
             const randomDay = Math.floor(Math.random() * 30) + 1; // Random day between 1 and 30
-            const randomHour = Math.floor(Math.random() * 24); // Random hour between 0 and 23
+            const randomHour = Math.floor(Math.random() * 23); // Random hour between 0 and 23
             const day = randomDay.toString().padStart(2, '0'); // Pad day with leading zero if needed
             const hour = randomHour.toString().padStart(2, '0'); // Pad hour with leading zero if needed
-            const createdAt = `2024-02-${day} ${hour}:00:00`; // Set createdAt to random day and hour
+            const createdAt = `2024-03-${day} ${hour}:00:00`; // Set createdAt to random day and hour
 
             // Generate random order items for each order
             const orderItems = [];

@@ -169,32 +169,36 @@ const Orders = () => {
             </div>
             <div className="table">
                 <div className="container">
-                    <TableContainer component={Paper}>
-                        <Table aria-label="collapsible table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell />
-                                    <TableCell align="center">Order ID</TableCell>
-                                    <TableCell align="center">Total Price (IQD)</TableCell>
-                                    <TableCell align="center">Date</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {currentRows.map((row) => (
-                                    <Row key={row.id} row={row} />
-                                ))}
-                            </TableBody>
-                        </Table>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25]}
-                            component="div"
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    </TableContainer>
+                    {currentRows.length == 0 ?
+                        <Error msg={"No order accroding to this dates"} />
+                        :
+                        <TableContainer component={Paper}>
+                            <Table aria-label="collapsible table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell />
+                                        <TableCell align="center">Order ID</TableCell>
+                                        <TableCell align="center">Total Price (IQD)</TableCell>
+                                        <TableCell align="center">Date</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {currentRows.map((row) => (
+                                        <Row key={row.id} row={row} />
+                                    ))}
+                                </TableBody>
+                            </Table>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                component="div"
+                                count={rows.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </TableContainer>
+                    }
                 </div>
             </div>
         </div>
